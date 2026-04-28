@@ -4,14 +4,6 @@ This repository packages the Ethics Filter Framework (EFF) as a Model Context Pr
 
 ---
 
-## Why EFF?
-
-In AI-intensive software development, User Stories are often the last actionable control point for surfacing and addressing ethical risks before code generation. Once requirements are handed off to agents or LLMs, missing constraints and stakeholder harms can propagate directly into implementation. EFF exists to make these risks explicit and actionable at the requirements level — before they become technical debt or real-world failures.
-
-The goal is not to apply ethics after code generation, but to introduce ethical constraints at the specification stage, where AI-assisted development is still controllable.
-
----
-
 ## What EFF Does
 
 EFF is a requirements-engineering method grounded in Value-Based Engineering (ISO/IEC/IEEE 24748-7000:2022). It:
