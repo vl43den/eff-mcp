@@ -1,9 +1,70 @@
-
 {
-	"utility": "The feature provides meaningful benefit to the intended user.",
-	"fairness": "The feature avoids unjustified discrimination or unequal treatment.",
-	"privacy": "The feature respects confidentiality, data minimization, and purpose limitation.",
-	"explainability": "The feature communicates relevant reasons, logic, or data practices clearly enough for informed use.",
-	"safety": "The feature avoids harmful, unsafe, or policy-violating outcomes.",
-	"autonomy": "(Optional) The feature respects user autonomy and avoids manipulative or dark patterns."
+  "version": "1.0",
+  "dimensions": {
+    "utility": {
+      "description": "The feature provides meaningful and relevant benefit to the intended user.",
+      "rubric": {
+        "pass": "The feature delivers clear, measurable value to the intended user group.",
+        "fail": "The feature provides no discernible benefit or is actively detrimental to users.",
+        "borderline": "The benefit is ambiguous, minor, or only applies to a subset of users."
+      },
+      "scoring_notes": [
+        "Assess intended use, not hypothetical extreme misuse only.",
+        "Be conservative when evidence is missing.",
+        "Prefer borderline over pass when justification is unclear."
+      ]
+    },
+    "fairness": {
+      "description": "The feature avoids unjustified bias, exclusion, or unequal treatment across affected user groups.",
+      "rubric": {
+        "pass": "No group is systematically disadvantaged or excluded; outcomes are equitable.",
+        "fail": "The feature introduces or perpetuates bias, discrimination, or unfair treatment.",
+        "borderline": "Some groups may be indirectly disadvantaged, or fairness is not clearly demonstrated."
+      },
+      "scoring_notes": [
+        "Consider both direct and indirect impacts on different groups.",
+        "If data on group outcomes is missing, prefer borderline.",
+        "Explicitly check for proxy variables that may encode bias."
+      ]
+    },
+    "privacy": {
+      "description": "The feature respects data minimization, confidentiality, informed handling of personal data, and purpose limitation.",
+      "rubric": {
+        "pass": "Only necessary data is collected, stored securely, and used solely for its stated purpose.",
+        "fail": "Unnecessary or sensitive data is collected, retained, or shared without justification.",
+        "borderline": "Data practices are unclear, or retention/usage policies are not fully transparent."
+      },
+      "scoring_notes": [
+        "Check for explicit data minimization and retention policies.",
+        "If data flows are undocumented, prefer borderline or fail.",
+        "Consider both technical and organizational controls."
+      ]
+    },
+    "explainability": {
+      "description": "The feature provides users with enough clarity about how outputs, decisions, or relevant system behavior are produced for informed use.",
+      "rubric": {
+        "pass": "Users can easily understand why outputs or decisions are made and what data is used.",
+        "fail": "The logic, criteria, or data usage is opaque or misleading to users.",
+        "borderline": "Some explanations are provided, but key logic or data practices remain unclear."
+      },
+      "scoring_notes": [
+        "Assess explanations from the perspective of a typical end user.",
+        "If technical details are present but not accessible, prefer borderline.",
+        "Check for both completeness and clarity."
+      ]
+    },
+    "safety": {
+      "description": "The feature avoids causing or enabling reasonably foreseeable physical, psychological, social, legal, or financial harm.",
+      "rubric": {
+        "pass": "The feature does not expose users to harm, unsafe situations, or policy violations.",
+        "fail": "The feature can cause physical, psychological, or financial harm, or violates safety policies.",
+        "borderline": "Potential risks are present but not clearly addressed or mitigated."
+      },
+      "scoring_notes": [
+        "Consider both direct and indirect harms, including edge cases.",
+        "If risk mitigations are not documented, prefer borderline.",
+        "Do not assume users will always act safely; check for misuse potential."
+      ]
+    }
+  }
 }

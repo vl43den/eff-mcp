@@ -1,15 +1,8 @@
 # EFF MCP Server — Project TODO
 
-## Status
-- [x] Paper written
-- [x] Repo created
-- [x] README written (v1)
-
----
-
 ## Phase 1 — Framework Design (Product Work)
 
-- [ ] Define final list of EFF dimensions (confirm: Utility, Fairness, Privacy, Explainability, Safety)
+- [x] Define final list of EFF dimensions (confirm: Utility, Fairness, Privacy, Explainability, Safety)
 - [ ] Write rubric per dimension — what is a PASS, FAIL, borderline?
 - [ ] Define severity tiers — same dimension, different weight per context (e.g. health data vs. chat)
 - [ ] Write trigger conditions — when should EFF be invoked by an agent?
