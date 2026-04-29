@@ -1,22 +1,33 @@
-from __future__ import annotations
+# -*- coding: utf-8 -*-
+"""This module contains the implementation of the EFF scorer."""
 
+from __future__ import annotations
 import argparse
 import json
 import os
-from pathlib import Path
 from typing import Literal
-
 from dotenv import load_dotenv
 from openai import OpenAI
 from pydantic import BaseModel, Field
-
+from pathlib import Path
 
 load_dotenv()
 
 
-DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-5.4-mini")
 DEFAULT_BASE_URL = os.getenv("OPENAI_BASE_URL")
-DEFAULT_DIMENSIONS_PATH = Path(__file__).resolve().parent.parent / "resources" / "dimensions.json"
+DEFAULT_DIMENSIONS_PATH = (
+    Path(__file__).resolve().parent.parent / "resources" / "dimensions.json"
+)
+
+
+# --- Local development: load OpenAI API key from a JSON file if EFF_SECRET_PATH is set ---
+secrets_path = os.getenv("EFF_SECRET_PATH")
+if secrets_path and os.path.exists(secrets_path):
+    with open(secrets_path, "r", encoding="utf-8") as f:
+        secrets = json.load(f)
+    if "OPENAI_API_KEY" in secrets:
+        os.environ["OPENAI_API_KEY"] = secrets["OPENAI_API_KEY"]
 
 
 class DimensionScore(BaseModel):
@@ -46,19 +57,20 @@ class ScoreResponse(BaseModel):
     summary: ScoreSummary
 
 
-def load_dimensions(dimensions_path: Path) -> dict:
-    if not dimensions_path.exists():
+def load_dimensions(dimensions_path: str) -> dict:
+    if not os.path.exists(dimensions_path):
         raise FileNotFoundError(f"dimensions.json not found at: {dimensions_path}")
 
-    with dimensions_path.open("r", encoding="utf-8") as f:
+    with open(dimensions_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
+    dimensions = data["dimensions"] if "dimensions" in data else data
     required = {"utility", "fairness", "privacy", "explainability", "safety"}
-    missing = required - set(data.keys())
+    missing = required - set(dimensions.keys())
     if missing:
         raise ValueError(f"dimensions.json missing required dimensions: {sorted(missing)}")
 
-    return data
+    return dimensions
 
 
 def build_messages(content: str, dimensions: dict) -> list[dict]:
@@ -135,7 +147,7 @@ def call_model(content: str, dimensions: dict, model: str = DEFAULT_MODEL) -> Sc
 
 def score_story(
     content: str,
-    dimensions_path: Path = DEFAULT_DIMENSIONS_PATH,
+    dimensions_path: str = DEFAULT_DIMENSIONS_PATH,
     model: str = DEFAULT_MODEL,
 ) -> dict:
     dimensions = load_dimensions(dimensions_path)
@@ -153,7 +165,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--dimensions",
-        default=str(DEFAULT_DIMENSIONS_PATH),
+        default=DEFAULT_DIMENSIONS_PATH,
         help="Path to dimensions.json",
     )
     parser.add_argument(
@@ -167,7 +179,7 @@ def main() -> None:
     try:
         result = score_story(
             content=args.content,
-            dimensions_path=Path(args.dimensions),
+            dimensions_path=args.dimensions,
             model=args.model,
         )
         json_output = json.dumps(result, indent=2, ensure_ascii=False)
