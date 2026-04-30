@@ -168,6 +168,12 @@ console.log(content[0].text); // Your ethically-informed component
 
 ---
 
+## References
+
+- Sekulic, Vajo (JKU Linz), Sekulic, Verena (Universität Wien), Herda, Tomas (Austrian Post), Zhang, Zheying (Tampere University). (2026). [Adding Ethics to Agile: The Ethics Filter Framework (EFF)](https://www.researchgate.net/publication/404070751_Adding_Ethics_to_Agile_The_Ethics_Filter_Framework_EFF). ResearchGate.
+
+---
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
