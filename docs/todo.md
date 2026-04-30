@@ -5,7 +5,7 @@
 - [x] Define final list of EFF dimensions (confirm: Utility, Fairness, Privacy, Explainability, Safety)
 - [x] Write rubric per dimension — what is a PASS, FAIL, borderline?
 - [ ] Define severity tiers — same dimension, different weight per context (e.g. health data vs. chat)
-- [ ] Write trigger conditions — when should EFF be invoked by an agent?
+- [x] Write trigger conditions — when should EFF be invoked by an agent?
 - [x] Document the harm clause format — exact template syntax agents must follow
 - [x] Write 3–5 example transformations (baseline → EFF-enhanced User Story)
 
@@ -15,10 +15,10 @@ _Output: `resources/dimensions.json`, `resources/examples.md`, `resources/SKILL.
 
 ## Phase 2 — SKILL.md (Agent Routing Instructions)
 
-- [ ] Write `SKILL.md` — the routing document agents read to know when and how to invoke EFF
-- [ ] Include: trigger conditions, step-by-step invocation instructions, output format
-- [ ] Include: what to do if a dimension fails, what to surface to the user
-- [ ] Review: does this read like acceptance criteria? It should.
+- [x] Write `SKILL.md` — the routing document agents read to know when and how to invoke EFF
+- [x] Include: trigger conditions, step-by-step invocation instructions, output format
+- [x] Include: what to do if a dimension fails, what to surface to the user
+- [x] Review: does this read like acceptance criteria? It should.
 
 _This is pure product/BA work. No coding required._
 
@@ -26,12 +26,12 @@ _This is pure product/BA work. No coding required._
 
 ## Phase 3 — Scorer (Plain Python, No MCP Yet)
 
-- [ ] Create `eff_mcp/scorer.py`
-- [ ] Implement `score_dimension(content, dimension, rubric)` as a standalone function
-- [ ] Use OpenAI client (or compatible) — model configurable via env var
-- [ ] Return structured JSON: `{ "pass": bool, "confidence": float, "reason": string }`
+- [x] Create `eff_mcp/scorer.py`
+- [x] Implement `score_dimension(content, dimension, rubric)` as a standalone function
+- [x] Use OpenAI client (or compatible) — model configurable via env var
+- [x] Return structured JSON: `{ "pass": bool, "confidence": float, "reason": string }`
 - [ ] Test scorer in isolation with `python scorer.py` — no MCP involved yet
-- [ ] Iterate on prompts until scoring feels consistent and defensible
+- [x] Iterate on prompts until scoring feels consistent and defensible
 - [ ] Handle errors gracefully (API timeout, malformed response, missing key)
 
 _Output: working `scorer.py` you can test with `python` directly_

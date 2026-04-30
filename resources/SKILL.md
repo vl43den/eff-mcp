@@ -1,18 +1,54 @@
 Perfect draft. Here's the **final, production-ready `SKILL.md`** with minor tightening:
 
 ```markdown
-# SKILL.md — EFF Rewriter
 
-## Purpose
+# SKILL.md — EFF Tools (ethics_filter & eff_rewrite)
 
-This skill rewrites a standard agile user story into an EFF-enhanced user story using the Ethics Filter Framework. It is the second step in the EFF pipeline, called after `ethics_filter` has scored the story.
 
-## Inputs
+## Overview
 
+The EFF capability exposes two tools for agent workflows:
+
+1. **ethics_filter** — Scores a user story against the EFF rubric (Utility, Fairness, Privacy, Explainability, Safety).
+2. **eff_rewrite** — Rewrites a user story into an EFF-enhanced version, using the output of `ethics_filter`.
+
+**Typical workflow:**
+1. Call `ethics_filter(user_story)` to get the scoring result.
+2. Call `eff_rewrite(user_story, scoring_result)` to generate the EFF-enhanced user story and acceptance criteria.
+
+
+---
+
+## Tool: ethics_filter
+
+**Purpose:**
+Scores a user story against the EFF rubric, returning a structured result for each dimension.
+
+**Inputs:**
 - `user_story` — the original user story in standard agile format
-- `scoring_result` — the output of `ethics_filter`, containing a result (`pass`, `borderline`, `fail`), a confidence score, and a reason for each of the five dimensions
 
-## Rewriting rules
+**Output:**
+- `scoring_result` — a dict with a result (`pass`, `Needs Improvement`, `fail`), confidence score, and reason for each dimension
+
+---
+
+## Tool: eff_rewrite
+
+**Purpose:**
+Rewrites a standard agile user story into an EFF-enhanced user story using the scoring result from `ethics_filter`.
+
+**Inputs:**
+- `user_story` — the original user story in standard agile format
+- `scoring_result` — the output of `ethics_filter`
+
+**Output:**
+- `enhanced_story` — the rewritten user story with harm clause (if needed)
+- `acceptance_criteria` — a list of measurable, testable criteria for each failed or Needs Improvement dimension
+
+
+---
+
+## Rewriting rules (eff_rewrite)
 
 ### Step 1 — Read the scoring result
 
@@ -20,7 +56,7 @@ This skill rewrites a standard agile user story into an EFF-enhanced user story 
 For each of the five dimensions (Utility, Fairness, Privacy, Explainability, Safety), note the result:
 
 - `pass` → no action needed for this dimension
-- `borderline` → add a measurable acceptance criterion for this dimension
+- `Needs Improvement` → add a measurable acceptance criterion for this dimension
 - `fail` → add a harm clause to the story stem AND a measurable acceptance criterion for this dimension
 
 ### Step 2 — Write the harm clause
@@ -45,7 +81,7 @@ Rules for writing the harm clause:
 ### Step 3 — Write the acceptance criteria
 
 
-Write one to two acceptance criteria per `fail` or `borderline` dimension. Each criterion must be:
+Write one to two acceptance criteria per `fail` or `Needs Improvement` dimension. Each criterion must be:
 
 - **Measurable** — include a quantitative threshold where possible (e.g., "at least 80%", "no older than 90 days", "block rate ≥ 99%")
 - **Testable** — a tester should be able to validate it as part of the Definition of Done
@@ -75,25 +111,34 @@ As a [role], I want [feature], so that [benefit], without [harm clause].
 ...
 ```
 
-Only include dimensions that scored `fail` or `borderline`. Do not add acceptance criteria for dimensions that passed — the story is already sound on those.
+Only include dimensions that scored `fail` or `Needs Improvement`. Do not add acceptance criteria for dimensions that passed — the story is already sound on those.
 
 ## What to avoid
 
 - **Do not invent risks** not flagged by the scorer. The harm clause and acceptance criteria must be traceable to the scoring result.
-- **Do not add a harm clause** for `borderline` dimensions — only for `fail`.
+- **Do not add a harm clause** for `Needs Improvement` dimensions — only for `fail`.
 - **Do not use vague language** in acceptance criteria — "should be transparent" is not testable; "users see a privacy notice before submitting" is.
 - **Do not repeat the scorer's reasoning verbatim** — synthesize it into plain, actionable language.
 - **Do not rename the five dimensions** — always use: Utility, Fairness, Privacy, Explainability, Safety.
 
+
+---
+
 ## Quick reference
 
-```
-| Scorer result | Rewriter action                                      |
-|--------------|------------------------------------------------------|
-| PASS         | No action required                                   |
-| BORDERLINE   | Add a measurable acceptance criterion                |
-| FAIL         | Add a harm clause + a measurable acceptance criterion|
-```
+| Tool           | Input(s)                        | Output(s)                                 |
+|----------------|---------------------------------|-------------------------------------------|
+| ethics_filter  | user_story                      | scoring_result (per-dimension results)    |
+| eff_rewrite    | user_story, scoring_result      | enhanced_story, acceptance_criteria       |
+
+| Scorer result      | Rewriter action                                      |
+|-------------------|------------------------------------------------------|
+| PASS              | No action required                                   |
+| Needs Improvement | Add a measurable acceptance criterion                |
+| FAIL              | Add a harm clause + a measurable acceptance criterion|
+
+
+---
 
 ## See also
 

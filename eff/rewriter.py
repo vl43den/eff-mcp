@@ -3,7 +3,7 @@
 
 import argparse
 import json
-from typing import Dict, Any, List
+from typing import Dict, List
 
 def rewrite_story(user_story: str, scoring_result: dict) -> dict:
     """
@@ -24,7 +24,7 @@ def rewrite_story(user_story: str, scoring_result: dict) -> dict:
         "safety": "Safety",
     }
     fail_reasons = []
-    borderline_criteria = []
+    needs_improvement_criteria = []
     fail_criteria = []
 
     # --- Step 2: Collect harm clause and acceptance criteria ---
@@ -37,8 +37,8 @@ def rewrite_story(user_story: str, scoring_result: dict) -> dict:
         if result == "fail":
             fail_reasons.append((dim_label, reason))
             fail_criteria.append((dim_label, reason))
-        elif result == "borderline":
-            borderline_criteria.append((dim_label, reason))
+        elif result == "Needs Improvement":
+            needs_improvement_criteria.append((dim_label, reason))
 
     # --- Step 3: Build harm clause (if any FAIL) ---
     harm_clause = None
@@ -53,7 +53,7 @@ def rewrite_story(user_story: str, scoring_result: dict) -> dict:
 
     # --- Step 4: Build acceptance criteria ---
     acceptance_criteria: List[Dict[str, str]] = []
-    for dim_label, reason in fail_criteria + borderline_criteria:
+    for dim_label, reason in fail_criteria + needs_improvement_criteria:
         # Synthesize a measurable/testable criterion from the reason (placeholder)
         criterion = f"Address the following: {reason.strip()}"
         acceptance_criteria.append({"dimension": dim_label, "criterion": criterion})

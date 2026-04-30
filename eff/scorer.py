@@ -31,7 +31,7 @@ if secrets_path and os.path.exists(secrets_path):
 
 
 class DimensionScore(BaseModel):
-    result: Literal["pass", "borderline", "fail"]
+    result: Literal["pass", "Needs Improvement", "fail"]
     confidence: float = Field(ge=0.0, le=1.0)
     reason: str = Field(min_length=1)
 
@@ -46,7 +46,7 @@ class ScoreResults(BaseModel):
 
 class ScoreSummary(BaseModel):
     passed: int
-    borderline: int
+    needs_improvement: int
     failed: int
 
 
@@ -79,9 +79,9 @@ def build_messages(content: str, dimensions: dict) -> list[dict]:
     system_prompt = (
         "You are an expert evaluator for the Ethics Filter Framework (EFF). "
         "Assess the provided content against the supplied rubric. "
-        "For each dimension, use the rubric and scoring_notes to assign one result: pass, borderline, or fail. "
+        "For each dimension, use the rubric and scoring_notes to assign one result: pass, Needs Improvement, or fail. "
         "Be conservative when information is missing or unclear. "
-        "If justification for pass is not explicit, prefer borderline. "
+        "If justification for pass is not explicit, prefer Needs Improvement. "
         "Return only structured output as specified."
     )
 
@@ -96,7 +96,8 @@ def build_messages(content: str, dimensions: dict) -> list[dict]:
         "- Do not invent details not present in the content.\n"
         "- Confidence must be a float between 0.0 and 1.0.\n"
         "- Reason must be brief, specific, and defensible.\n"
-        "- Output must be valid JSON matching the expected schema."
+        "- Output must be valid JSON matching the expected schema.\n"
+        "- Use 'Needs Improvement' instead of 'borderline' if the justification for pass is not explicit."
     )
 
     return [
@@ -133,7 +134,7 @@ def call_model(content: str, dimensions: dict, model: str = DEFAULT_MODEL) -> Sc
 
     summary = ScoreSummary(
         passed=sum(1 for x in parsed.model_dump().values() if x["result"] == "pass"),
-        borderline=sum(1 for x in parsed.model_dump().values() if x["result"] == "borderline"),
+        needs_improvement=sum(1 for x in parsed.model_dump().values() if x["result"] == "Needs Improvement"),
         failed=sum(1 for x in parsed.model_dump().values() if x["result"] == "fail"),
     )
 
