@@ -1,3 +1,9 @@
+![Status](https://img.shields.io/badge/status-active-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Python](https://img.shields.io/badge/python-3.11%2B-blueviolet)
+![FastMCP](https://img.shields.io/badge/FastMCP-ready-orange)
+
+
 # Ethics Filter Framework (EFF) — MCP Capability
 
 This repository packages the Ethics Filter Framework (EFF) as a Model Context Protocol (MCP) capability for agent-based requirements engineering. It is designed for integration with agent platforms (e.g., OpenClaw) that support MCP, enabling automated User Story refinement and ethical risk surfacing during agile development.
@@ -105,6 +111,25 @@ For stdio-based hosts (e.g. Claude Desktop, OpenClaw, Cursor):
 ```
 
 4. Your agent can now access EFF instructions, dimensions, and evaluation logic via MCP.
+
+---
+
+## Code Generation from EFF Output
+
+EFF returns the enhanced user story and acceptance criteria as structured data, which can be used directly as input for code generation pipelines.
+
+**How it works:**
+1. **Input:** You give the user story and the EFF acceptance criteria to an AI model or agent.
+2. **Prompt:** You ask the model to write code (for example, a React component or a backend API) that does what the story says and follows all the acceptance criteria.
+3. **Output:** The model gives you code that is ready to use, and it already includes the ethical rules from EFF.
+
+**Why this is helpful:**
+- The EFF acceptance criteria become part of the requirements for the code, so values like fairness, privacy, and explainability are included from the start.
+- For example:
+  - If there is a Privacy rule, the code might ask users for consent or delete old data.
+  - If there is an Explainability rule, the code might show a message explaining how it works or add helpful comments.
+
+This way, any code you generate from EFF-checked stories will already have important ethical protections built in.
 
 ---
 

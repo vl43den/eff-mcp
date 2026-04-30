@@ -6,8 +6,10 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
 
+
 from fastmcp import FastMCP
 from eff.scorer import score_story, DEFAULT_DIMENSIONS_PATH, DEFAULT_MODEL
+from eff.rewriter import rewrite_story
 
 mcp = FastMCP("eff-mcp")
 
@@ -20,6 +22,13 @@ def ethics_filter(user_story: str) -> dict:
         dimensions_path=DEFAULT_DIMENSIONS_PATH,
         model=DEFAULT_MODEL,
     )
+
+
+# New tool: eff_rewrite
+@mcp.tool()
+def eff_rewrite(user_story: str, scoring_result: dict) -> dict:
+    """Rewrite a user story using the EFF scoring result."""
+    return rewrite_story(user_story, scoring_result)
 
 
 if __name__ == "__main__":
