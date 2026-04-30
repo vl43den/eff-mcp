@@ -62,17 +62,6 @@ This repository exposes EFF as an MCP-compatible capability. Agents can:
 
 ---
 
-## Intended Workflow
-
-1. **Draft User Story**: An agent or user submits a baseline User Story
-2. **EFF Refinement**: The agent invokes EFF via MCP to:
-   - Identify missing ethical constraints
-   - Rewrite the story with a harm clause
-   - Generate acceptance criteria for each relevant dimension
-3. **Implementation Spec**: The refined, ethically bounded User Story is returned as a safer specification for downstream implementation
-
----
-
 ## Quickstart (for MCP Hosts / Agent Integrators)
 
 > **This server is intended to be self-hosted by the team or organization using it. Each deployment requires its own model provider credentials. This repository does not provide hosted inference.**
