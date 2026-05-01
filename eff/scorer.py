@@ -13,7 +13,7 @@ from pathlib import Path
 
 load_dotenv()
 
-
+#Consider 5.5
 DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-5.4-mini")
 DEFAULT_BASE_URL = os.getenv("OPENAI_BASE_URL")
 DEFAULT_DIMENSIONS_PATH = str(
