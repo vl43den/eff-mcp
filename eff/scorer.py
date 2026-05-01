@@ -16,7 +16,6 @@ load_dotenv()
 
 DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-5.4-mini")
 DEFAULT_BASE_URL = os.getenv("OPENAI_BASE_URL")
-# Cast Path to string to align with the type hints in your functions
 DEFAULT_DIMENSIONS_PATH = str(
     Path(__file__).resolve().parent.parent / "resources" / "dimensions.json"
 )
