@@ -16,7 +16,8 @@ load_dotenv()
 
 DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-5.4-mini")
 DEFAULT_BASE_URL = os.getenv("OPENAI_BASE_URL")
-DEFAULT_DIMENSIONS_PATH = (
+# Cast Path to string to align with the type hints in your functions
+DEFAULT_DIMENSIONS_PATH = str(
     Path(__file__).resolve().parent.parent / "resources" / "dimensions.json"
 )
 
@@ -122,13 +123,14 @@ def call_model(content: str, dimensions: dict, model: str = DEFAULT_MODEL) -> Sc
     client = build_client()
     messages = build_messages(content, dimensions)
 
-    response = client.responses.parse(
+    # Correct SDK syntax for parsing Pydantic models
+    response = client.beta.chat.completions.parse(
         model=model,
-        input=messages,
-        text_format=ScoreResults,
+        messages=messages,
+        response_format=ScoreResults,
     )
 
-    parsed = response.output_parsed
+    parsed = response.choices[0].message.parsed
     if parsed is None:
         raise ValueError("Model returned no parsed structured output.")
 
